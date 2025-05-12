@@ -1,6 +1,7 @@
-# Gerenciamento de Categorias com Streamlit e AWS RDS
 
-Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas de **Implementação de Software**. O objetivo é ensinar como conectar o Python a um banco de dados **AWS RDS** e demonstrar como criar uma aplicação interativa utilizando o framework **Streamlit** para realizar operações CRUD (Create, Read, Update, Delete) em uma tabela chamada `categories`.
+# Gerenciamento de Categorias e Territórios com Streamlit e AWS RDS
+
+Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas de **Implementação de Software**. O objetivo é ensinar como conectar o Python a um banco de dados **AWS RDS** e demonstrar como criar uma aplicação interativa utilizando o framework **Streamlit** para realizar operações CRUD (Create, Read, Update, Delete) em tabelas chamadas `categories` e `territories`.
 
 ---
 
@@ -10,6 +11,10 @@ Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas
 2. **Ler Categorias**: Visualize todas as categorias cadastradas no banco de dados.
 3. **Atualizar Categoria**: Atualize o nome e a descrição de uma categoria existente.
 4. **Deletar Categoria**: Exclua uma categoria pelo ID.
+5. **Criar Território**: Adicione novos territórios com descrição e ID da região.
+6. **Ler Territórios**: Visualize todos os territórios cadastrados no banco de dados.
+7. **Atualizar Território**: Atualize a descrição e o ID da região de um território existente.
+8. **Deletar Território**: Exclua um território pelo ID.
 
 ---
 
