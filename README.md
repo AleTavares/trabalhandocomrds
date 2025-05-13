@@ -6,6 +6,14 @@ Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas
 
 ## Funcionalidades
 
+1. **Gerenciar Regioes**: Mude para o crud de Regioes.
+2. **Gerenciar Categorias**: Mude para o crud de Categorias.
+
+1. **Criar Categoria**: Adicione novas regioes com descrição.
+2. **Ler Categorias**: Visualize todas as regioes cadastradas no banco de dados.
+3. **Atualizar Categoria**: Atualize a descrição de uma regiao existente.
+4. **Deletar Categoria**: Exclua uma regiao pelo ID.
+
 1. **Criar Categoria**: Adicione novas categorias com nome e descrição.
 2. **Ler Categorias**: Visualize todas as categorias cadastradas no banco de dados.
 3. **Atualizar Categoria**: Atualize o nome e a descrição de uma categoria existente.
