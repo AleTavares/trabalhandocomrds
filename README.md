@@ -51,6 +51,7 @@ A estrutura do repositório é a seguinte:
 AulaRDS/
 │
 ├── crud.py          # Código principal da aplicação Streamlit
+├── crudEmployees.py # Código para gerenciamento de funcionários
 ├── config.yml       # Arquivo de configuração com as credenciais do banco de dados
 ├── Readme.md        # Documentação do projeto
 ├── requirements.txt # Lista de dependências do projeto
@@ -104,6 +105,59 @@ AulaRDS/
       description TEXT
   );
   ```
+
+---
+
+# Gerenciamento de Funcionários
+
+Este projeto implementa um sistema de gerenciamento de funcionários utilizando Python, Streamlit e PostgreSQL. Ele permite realizar operações CRUD (Criar, Ler, Atualizar e Deletar) na tabela `employees` do banco de dados.
+
+## Funcionalidades
+
+### Arquivo `crudEmployees.py`
+O arquivo `crudEmployees.py` implementa as seguintes funcionalidades:
+
+1. **Criar Funcionário**:
+   - Permite adicionar um novo funcionário ao banco de dados.
+   - Valida os campos de entrada, como comprimento máximo e formato de dados.
+   - Gera automaticamente o `employee_id` para evitar conflitos de chave primária.
+
+2. **Ler Funcionários**:
+   - Exibe uma lista de todos os funcionários cadastrados no banco de dados.
+   - Mostra informações como ID, nome, título e cidade.
+
+3. **Atualizar Funcionário**:
+   - Permite editar os dados de um funcionário existente.
+   - Carrega os dados atuais do funcionário selecionado para facilitar a edição.
+
+4. **Deletar Funcionário**:
+   - Permite excluir um funcionário do banco de dados com base no `employee_id`.
+
+5. **Criar Funcionário de Teste**:
+   - Adiciona um funcionário de teste com valores predefinidos para facilitar a validação do sistema.
+
+## Requisitos
+
+- Python 3.8 ou superior
+- PostgreSQL
+- Bibliotecas Python:
+  - `streamlit`
+  - `psycopg2`
+  - `pyyaml`
+
+## Configuração
+
+1. Configure o arquivo `config.yml` com as credenciais do banco de dados.
+2. Execute o script SQL `northwind.sql` para criar e popular as tabelas necessárias no banco de dados.
+3. Inicie o aplicativo Streamlit com o comando:
+   ```bash
+   streamlit run crudEmployees.py
+   ```
+
+## Observações
+
+- Certifique-se de que a sequência `employee_id` no banco de dados esteja sincronizada para evitar erros de chave duplicada.
+- O campo `photo_path` foi ajustado para aceitar até 255 caracteres.
 
 ---
 

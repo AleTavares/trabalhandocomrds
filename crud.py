@@ -20,10 +20,45 @@ def get_connection():
     )
 
 # Funções para interagir com o banco de dados
-def create_category(name, description):
+def create_category(name, description, category_id=None, category_name=None):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO categories (name, description) VALUES (%s, %s)", (name, description))
+    if category_id:
+        # Validar se category_id é um número inteiro
+        try:
+            category_id = int(category_id)
+        except ValueError:
+            raise ValueError("O ID da categoria deve ser um número inteiro.")
+        # Verificar se o category_id já existe
+        cursor.execute("SELECT 1 FROM categories WHERE category_id = %s", (category_id,))
+        if cursor.fetchone():
+            raise ValueError(f"O ID da categoria '{category_id}' já existe.")
+    if category_id and category_name:
+        cursor.execute(
+            "INSERT INTO categories (category_id, category_name, name, description) VALUES (%s, %s, %s, %s)",
+            (category_id, category_name, name, description),
+        )
+    elif category_name:
+        cursor.execute(
+            "INSERT INTO categories (category_name, name, description) VALUES (%s, %s, %s)",
+            (category_name, name, description),
+        )
+    else:
+        cursor.execute(
+            "INSERT INTO categories (name, description) VALUES (%s, %s)",
+            (name, description),
+        )
+    conn.commit()
+    conn.close()
+
+def create_employee(last_name, first_name, title, title_of_courtesy, birth_date, hire_date, address, city, region, postal_code, country, home_phone, extension, photo, notes, reports_to, photo_path):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO employees (
+            last_name, first_name, title, title_of_courtesy, birth_date, hire_date, address, city, region, postal_code, country, home_phone, extension, photo, notes, reports_to, photo_path
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """, (last_name, first_name, title, title_of_courtesy, birth_date, hire_date, address, city, region, postal_code, country, home_phone, extension, photo, notes, reports_to, photo_path))
     conn.commit()
     conn.close()
 
@@ -38,14 +73,17 @@ def read_categories():
 def update_category(category_id, name, description):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("UPDATE categories SET name = %s, description = %s WHERE id = %s", (name, description, category_id))
+    cursor.execute(
+        "UPDATE categories SET name = %s, description = %s WHERE category_id = %s",
+        (name, description, category_id),
+    )
     conn.commit()
     conn.close()
 
 def delete_category(category_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM categories WHERE id = %s", (category_id,))
+    cursor.execute("DELETE FROM categories WHERE category_id = %s", (category_id,))
     conn.commit()
     conn.close()
 
@@ -62,10 +100,20 @@ if choice == "Criar":
     with st.form("create_form"):
         name = st.text_input("Nome da Categoria")
         description = st.text_area("Descrição")
+        category_id = st.text_input("ID da Categoria (opcional)")
+        category_name = st.text_input("Nome da Categoria (opcional)")
         submitted = st.form_submit_button("Adicionar")
         if submitted:
-            create_category(name, description)
-            st.success(f"Categoria '{name}' adicionada com sucesso!")
+            try:
+                if category_id and category_name:
+                    create_category(name, description, category_id, category_name)
+                elif category_name:
+                    create_category(name, description, category_name=category_name)
+                else:
+                    create_category(name, description)
+                st.success(f"Categoria '{name}' adicionada com sucesso!")
+            except ValueError as e:
+                st.error(str(e))
 
 # Ler categorias
 elif choice == "Ler":
