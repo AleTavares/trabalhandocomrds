@@ -23,14 +23,20 @@ def get_connection():
 def create_category(name, description):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO categories (name, description) VALUES (%s, %s)", (name, description))
+    # Obter o próximo ID disponível
+    cursor.execute("SELECT MAX(category_id) FROM categories")
+    max_id = cursor.fetchone()[0]
+    new_id = 1 if max_id is None else max_id + 1
+    
+    cursor.execute("INSERT INTO categories (category_id, category_name, description) VALUES (%s, %s, %s)", 
+                  (new_id, name, description))
     conn.commit()
     conn.close()
 
 def read_categories():
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM categories")
+    cursor.execute("SELECT category_id, category_name, description FROM categories")
     rows = cursor.fetchall()
     conn.close()
     return rows
@@ -38,14 +44,15 @@ def read_categories():
 def update_category(category_id, name, description):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("UPDATE categories SET name = %s, description = %s WHERE id = %s", (name, description, category_id))
+    cursor.execute("UPDATE categories SET category_name = %s, description = %s WHERE category_id = %s", 
+                  (name, description, category_id))
     conn.commit()
     conn.close()
 
 def delete_category(category_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM categories WHERE id = %s", (category_id,))
+    cursor.execute("DELETE FROM categories WHERE category_id = %s", (category_id,))
     conn.commit()
     conn.close()
 
@@ -71,31 +78,40 @@ if choice == "Criar":
 elif choice == "Ler":
     st.subheader("Lista de Categorias")
     categories = read_categories()
-    for category in categories:
-        st.write(f"ID: {category[0]} | Nome: {category[1]} | Descrição: {category[2]}")
+    if categories:
+        for category in categories:
+            st.write(f"ID: {category[0]} | Nome: {category[1]} | Descrição: {category[2]}")
+    else:
+        st.info("Nenhuma categoria encontrada.")
 
 # Atualizar categoria
 elif choice == "Atualizar":
     st.subheader("Atualizar Categoria")
     categories = read_categories()
-    category_ids = [category[0] for category in categories]
-    selected_id = st.selectbox("Selecione o ID da Categoria", category_ids)
-    selected_category = next((cat for cat in categories if cat[0] == selected_id), None)
-    if selected_category:
-        with st.form("update_form"):
-            new_name = st.text_input("Novo Nome", value=selected_category[1])
-            new_description = st.text_area("Nova Descrição", value=selected_category[2])
-            submitted = st.form_submit_button("Atualizar")
-            if submitted:
-                update_category(selected_id, new_name, new_description)
-                st.success(f"Categoria ID {selected_id} atualizada com sucesso!")
+    if categories:
+        category_ids = [category[0] for category in categories]
+        selected_id = st.selectbox("Selecione o ID da Categoria", category_ids)
+        selected_category = next((cat for cat in categories if cat[0] == selected_id), None)
+        if selected_category:
+            with st.form("update_form"):
+                new_name = st.text_input("Novo Nome", value=selected_category[1])
+                new_description = st.text_area("Nova Descrição", value=selected_category[2])
+                submitted = st.form_submit_button("Atualizar")
+                if submitted:
+                    update_category(selected_id, new_name, new_description)
+                    st.success(f"Categoria ID {selected_id} atualizada com sucesso!")
+    else:
+        st.info("Nenhuma categoria disponível para atualização.")
 
 # Deletar categoria
 elif choice == "Deletar":
     st.subheader("Deletar Categoria")
     categories = read_categories()
-    category_ids = [category[0] for category in categories]
-    selected_id = st.selectbox("Selecione o ID da Categoria para Deletar", category_ids)
-    if st.button("Deletar"):
-        delete_category(selected_id)
-        st.success(f"Categoria ID {selected_id} deletada com sucesso!")
+    if categories:
+        category_ids = [category[0] for category in categories]
+        selected_id = st.selectbox("Selecione o ID da Categoria para Deletar", category_ids)
+        if st.button("Deletar"):
+            delete_category(selected_id)
+            st.success(f"Categoria ID {selected_id} deletada com sucesso!")
+    else:
+        st.info("Nenhuma categoria disponível para exclusão.")
