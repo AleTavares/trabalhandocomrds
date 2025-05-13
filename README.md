@@ -13,6 +13,22 @@ Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas
 
 ---
 
+## Funcionalidades Adicionadas
+
+### Gerenciamento de Categorias
+- **Criar**: Adicione novas categorias com nome e descrição.
+- **Ler**: Liste todas as categorias cadastradas no banco de dados.
+- **Atualizar**: Atualize o nome e a descrição de uma categoria existente.
+- **Deletar**: Exclua uma categoria pelo ID.
+
+### Gerenciamento de Customers
+- **Criar**: Adicione novos clientes com ID, nome e nome do contato.
+- **Ler**: Liste todos os clientes cadastrados no banco de dados.
+- **Atualizar**: Atualize o nome e o nome do contato de um cliente existente.
+- **Deletar**: Exclua um cliente pelo ID.
+
+---
+
 ## Pré-requisitos
 
 1. **Python 3.8+** instalado.
