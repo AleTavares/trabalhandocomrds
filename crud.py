@@ -62,7 +62,7 @@ def delete_category(category_id):
     conn.close()
 
 
-# funç~oes para interação da tabela customers
+# funç~oes para interação da tabela employee_territory
 def create_employee_territory(employee_id, territory_id):
     conn = get_connection()
     cursor = conn.cursor()
