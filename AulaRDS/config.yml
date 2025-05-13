@@ -1,0 +1,6 @@
+database:
+  host: "your-rds-endpoint.amazonaws.com"
+  port: 5432
+  user: "postgres"
+  password: "aulaUniFAAT"
+  dbname: "northwind"
