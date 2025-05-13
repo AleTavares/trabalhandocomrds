@@ -23,7 +23,7 @@ Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas
 
    Instale as dependências com o comando:
    ```bash
-   pip install streamlit psycopg2-binary pyyaml
+  
    ```
 
 3. **Banco de Dados AWS RDS**:
@@ -80,8 +80,6 @@ AulaRDS/
      pip install -r requirements.txt
      ```
 
-5. **Execute a aplicação**:
-   - Inicie o Streamlit com o comando:
      ```bash
      streamlit run crud.py
      ```
