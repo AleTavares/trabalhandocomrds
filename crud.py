@@ -23,7 +23,7 @@ def get_connection():
 def create_category(name, description):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO categories (name, description) VALUES (%s, %s)", (name, description))
+    cursor.execute("INSERT INTO categories (category_name, description) VALUES (%s, %s)", (name, description))
     conn.commit()
     conn.close()
 
@@ -38,14 +38,14 @@ def read_categories():
 def update_category(category_id, name, description):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("UPDATE categories SET name = %s, description = %s WHERE id = %s", (name, description, category_id))
+    cursor.execute("UPDATE categories SET name = %s, description = %s WHERE category_id = %s", (name, description, category_id))
     conn.commit()
     conn.close()
 
 def delete_category(category_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM categories WHERE id = %s", (category_id,))
+    cursor.execute("DELETE FROM categories WHERE category_id = %s", (category_id,))
     conn.commit()
     conn.close()
 
