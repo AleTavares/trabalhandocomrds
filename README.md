@@ -115,6 +115,21 @@ Certifique-se de ler o arquivo e tentar resolver o desafio para consolidar os co
 
 ---
 
+## Funcionalidades Implementadas
+
+Este sistema inclui operações CRUD utilizando Streamlit para as seguintes tabelas:
+
+- **Categorias**:
+  - Adição, visualização, edição e exclusão de categorias com campos `name` e `description`.
+
+- **Shippers**:
+  - Adição, visualização, edição e exclusão de shippers com campos `shipper_id`, `company_name` e `phone`.
+  - Navegação independente para cada módulo no menu lateral do aplicativo.
+
+Todas as interações utilizam uma conexão segura com o banco de dados PostgreSQL definida no arquivo `config.yml`.
+
+---
+
 ## Próximos Passos
 
 - Adicionar autenticação para proteger a aplicação.
