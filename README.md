@@ -126,3 +126,64 @@ Certifique-se de ler o arquivo e tentar resolver o desafio para consolidar os co
 ## Licença
 
 Este projeto é apenas para fins educacionais e foi desenvolvido para os alunos da UniFAAT. Sinta-se à vontade para utilizá-lo e modificá-lo conforme necessário.
+
+## README
+
+Este é um projeto Streamlit para gerenciamento de funcionários armazenados em um banco de dados PostgreSQL no Amazon RDS (Relational Database Service).
+
+**Visão Geral:**
+
+A aplicação oferece uma interface web interativa para realizar as operações básicas de CRUD (Criar, Ler, Atualizar e Deletar) em uma tabela de funcionários. As credenciais de conexão com o banco de dados são carregadas de um arquivo de configuração YAML (`config.yml`).
+
+**Pré-requisitos:**
+
+* **Python 3.6+:** Certifique-se de ter o Python instalado em seu sistema.
+* **Bibliotecas Python:** As seguintes bibliotecas são necessárias e podem ser instaladas usando o pip:
+    ```bash
+    pip install streamlit psycopg2 pyyaml
+    ```
+* **Arquivo de Configuração `config.yml`:** Um arquivo YAML chamado `config.yml` deve estar presente no mesmo diretório do script Python, contendo as informações de conexão com o seu banco de dados RDS PostgreSQL. O formato esperado do arquivo é:
+
+    ```yaml
+    database:
+      host: "your_rds_host"
+      port: 5432
+      user: "your_rds_user"
+      password: "your_rds_password"
+      dbname: "your_rds_dbname"
+    ```
+
+    Substitua os valores entre as aspas pelas suas credenciais reais do RDS.
+
+* **Banco de Dados PostgreSQL no AWS RDS:** Você precisa ter uma instância do PostgreSQL rodando no AWS RDS e uma tabela chamada `employees` configurada com as seguintes colunas (mínimo):
+    * `employee_id` (INTEGER PRIMARY KEY)
+    * `first_name` (VARCHAR)
+    * `last_name` (VARCHAR)
+    * `title` (VARCHAR)
+    * `hire_date` (DATE)
+
+**Como Executar a Aplicação:**
+
+1. **Salve o código Python:** Salve o código Python fornecido em um arquivo chamado `app.py` (ou outro nome de sua preferência).
+2. **Crie o arquivo `config.yml`:** Crie um arquivo chamado `config.yml` no mesmo diretório de `app.py` e preencha com as suas credenciais do RDS conforme o formato especificado nos pré-requisitos.
+3. **Abra o terminal:** Navegue até o diretório onde você salvou os arquivos.
+4. **Execute o Streamlit:** Rode o seguinte comando no seu terminal:
+    ```bash
+    streamlit run app.py
+    ```
+5. **Acesse no navegador:** O Streamlit irá abrir automaticamente uma nova aba no seu navegador com a interface da aplicação. Se não abrir, procure no terminal o endereço local (geralmente `http://localhost:8501`).
+
+**Funcionalidades:**
+
+A aplicação oferece as seguintes funcionalidades através de um menu de navegação na barra lateral:
+
+* **Criar:** Permite adicionar um novo funcionário ao banco de dados, solicitando o primeiro nome, último nome, título e data de contratação. O `employee_id` é gerado automaticamente.
+* **Ler:** Exibe uma lista de todos os funcionários cadastrados no banco de dados, mostrando o ID, nome completo, título e data de contratação.
+* **Atualizar:** Permite selecionar um funcionário pelo ID e atualizar seu primeiro nome, último nome e título.
+* **Deletar:** Permite selecionar um funcionário pelo ID e removê-lo do banco de dados.
+
+**Observações:**
+
+* **Segurança:** As credenciais do banco de dados são armazenadas em um arquivo YAML local. Em um ambiente de produção, é altamente recomendável utilizar métodos mais seguros para gerenciar credenciais, como variáveis de ambiente ou um serviço de gerenciamento de segredos.
+* **Tratamento de Erros:** O código fornecido possui um tratamento básico de sucesso nas operações. Em uma aplicação mais robusta, seria importante adicionar tratamento de erros para falhas de conexão com o banco de dados ou outras exceções.
+* **Validação de Dados:** A aplicação não implementa validação de dados nos formulários. Adicionar validação para garantir a integridade dos dados inseridos seria um aprimoramento importante.
