@@ -126,3 +126,6 @@ Certifique-se de ler o arquivo e tentar resolver o desafio para consolidar os co
 ## Licença
 
 Este projeto é apenas para fins educacionais e foi desenvolvido para os alunos da UniFAAT. Sinta-se à vontade para utilizá-lo e modificá-lo conforme necessário.
+
+
+Criei um CRUD completo para a tabela CUSTOMERS incluindo a interface no streamlit
