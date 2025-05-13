@@ -23,7 +23,8 @@ def get_connection():
 def create_category(name, description):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO categories (name, description) VALUES (%s, %s)", (name, description))
+    # Atualizando para usar a coluna correta 'category_name'
+    cursor.execute("INSERT INTO categories (category_name, description) VALUES (%s, %s)", (name, description))
     conn.commit()
     conn.close()
 
@@ -38,14 +39,16 @@ def read_categories():
 def update_category(category_id, name, description):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("UPDATE categories SET name = %s, description = %s WHERE id = %s", (name, description, category_id))
+    # Atualizando para usar a coluna correta 'category_id'
+    cursor.execute("UPDATE categories SET category_name = %s, description = %s WHERE category_id = %s", (name, description, category_id))
     conn.commit()
     conn.close()
 
 def delete_category(category_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM categories WHERE id = %s", (category_id,))
+    # Atualizando para usar a coluna correta 'category_id'
+    cursor.execute("DELETE FROM categories WHERE category_id = %s", (category_id,))
     conn.commit()
     conn.close()
 
@@ -64,8 +67,11 @@ if choice == "Criar":
         description = st.text_area("Descrição")
         submitted = st.form_submit_button("Adicionar")
         if submitted:
-            create_category(name, description)
-            st.success(f"Categoria '{name}' adicionada com sucesso!")
+            if not name.strip():
+                st.error("O campo 'Nome da Categoria' é obrigatório.")
+            else:
+                create_category(name, description)
+                st.success(f"Categoria '{name}' adicionada com sucesso!")
 
 # Ler categorias
 elif choice == "Ler":
