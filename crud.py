@@ -36,18 +36,57 @@ def read_categories():
     return rows
 
 def update_category(category_id, name, description):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        # Ajuste o nome da coluna da chave primária
+        cursor.execute("UPDATE categories SET name = %s, description = %s WHERE category_id = %s", (name, description, category_id))
+        conn.commit()
+        conn.close()
+        st.success(f"Categoria ID {category_id} atualizada com sucesso!")
+    except Exception as e:
+        st.error(f"Erro ao atualizar categoria ID {category_id}: {e}")
+
+def delete_category(category_id):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        # Ajuste o nome da coluna da chave primária
+        cursor.execute("DELETE FROM categories WHERE category_id = %s", (category_id,))
+        conn.commit()
+        conn.close()
+        st.success(f"Categoria ID {category_id} deletada com sucesso!")
+    except Exception as e:
+        st.error(f"Erro ao deletar categoria ID {category_id}: {e}")
+def create_product(product_id, name, price):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("UPDATE categories SET name = %s, description = %s WHERE id = %s", (name, description, category_id))
+    cursor.execute("INSERT INTO products (product_id, name, price) VALUES (%s, %s, %s)", (product_id, name, price))
     conn.commit()
     conn.close()
 
-def delete_category(category_id):
+def read_products():
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM categories WHERE id = %s", (category_id,))
+    cursor.execute("SELECT * FROM products")
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def update_product(product_id, name, price):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE products SET name = %s, price = %s WHERE product_id = %s", (name, price, product_id))
     conn.commit()
     conn.close()
+
+def delete_product(product_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM products WHERE product_id = %s", (product_id,))
+    conn.commit()
+    conn.close()
+
 
 # Interface do Streamlit
 st.title("Gerenciamento de Categorias")
