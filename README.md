@@ -126,3 +126,45 @@ Certifique-se de ler o arquivo e tentar resolver o desafio para consolidar os co
 ## Licença
 
 Este projeto é apenas para fins educacionais e foi desenvolvido para os alunos da UniFAAT. Sinta-se à vontade para utilizá-lo e modificá-lo conforme necessário.
+
+
+# Projeto Northwind - Gerenciamento de Dados
+
+Este projeto é uma aplicação para gerenciar os dados do banco de dados Northwind. Ele permite realizar operações CRUD (Create, Read, Update, Delete) em diferentes tabelas do banco de dados.
+
+## Funcionalidades Implementadas
+
+### Gerenciamento de Categorias
+- **Criar Categoria**: Permite adicionar uma nova categoria ao banco de dados, fornecendo o ID, nome e descrição.
+- **Ler Categorias**: Exibe todas as categorias cadastradas no banco de dados.
+- **Atualizar Categoria**: Permite editar o nome e a descrição de uma categoria existente.
+- **Deletar Categoria**: Remove uma categoria do banco de dados com base no ID fornecido.
+
+### Gerenciamento de Order Details
+- **Criar Order Detail**: Permite adicionar um novo registro na tabela `order_details`, fornecendo os valores de `order_id`, `product_id`, `unit_price`, `quantity` e `discount`.
+- **Ler Order Details**: Exibe todos os registros da tabela `order_details`.
+- **Atualizar Order Detail**: Permite editar os valores de `unit_price`, `quantity` e `discount` para um registro específico identificado por `order_id` e `product_id`.
+- **Deletar Order Detail**: Remove um registro da tabela `order_details` com base nos valores de `order_id` e `product_id`.
+
+## Como Usar
+
+1. **Configuração do Banco de Dados**:
+   - Certifique-se de que o banco de dados PostgreSQL está configurado e populado com o script `northwind.sql`.
+   - Atualize o arquivo `config.yml` com as credenciais do banco de dados.
+
+2. **Instalação de Dependências**:
+   - Instale as dependências do projeto com o comando:
+     ```bash
+     pip install -r requirements.txt
+     ```
+
+3. **Executando a Aplicação**:
+   - Inicie a aplicação Streamlit com o comando:
+     ```bash
+     streamlit run crud.py
+     ```
+
+4. **Navegação**:
+   - Use a barra lateral para selecionar a tabela que deseja gerenciar (`Categorias` ou `Order Details`).
+   - Escolha a operação desejada no menu (`Criar`, `Ler`, `Atualizar`, `Deletar`).
+
