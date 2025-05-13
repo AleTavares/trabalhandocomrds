@@ -17,7 +17,7 @@ def get_connection():
         conn = psycopg2.connect(**DB_CONFIG)
         return conn
     except OperationalError as e:
-        st.error(f"Erro ao conectar ao banco de dados: {e}")
+        st.error(f"Erro ao conectaar ao banco de dados: {e}")
         return None
 
 # Funções CRUD para produtos
