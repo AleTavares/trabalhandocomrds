@@ -46,24 +46,7 @@ AulaRDS/
 
 ## Como Participar
 
-### 1. Faça o Fork do Repositório
-
-1. Acesse o repositório original no GitHub.
-2. Clique no botão **Fork** no canto superior direito para criar uma cópia do repositório na sua conta.
-
-### 2. Clone o Repositório Forkado
-
-1. No seu repositório forkado, clique no botão **Code** e copie o link HTTPS.
-2. No terminal, execute:
-   ```bash
-   git clone <url-do-seu-fork>
-   cd AulaRDS
-   ```
-
-### 3. Configure o Banco de Dados
-
-1. Certifique-se de que o banco de dados PostgreSQL no AWS RDS está configurado.
-2. Execute o script `northwind.sql` no banco de dados para criar as tabelas necessárias.
+#wind.sql` no banco de dados para criar as tabelas necessárias.
 
 ### 4. Configure o Arquivo `config.yml`
 
@@ -103,7 +86,24 @@ AulaRDS/
    ```
 
 ### 9. Abra um Pull Request
+## 1. Faça o Fork do Repositório
 
+1. Acesse o repositório original no GitHub.
+2. Clique no botão **Fork** no canto superior direito para criar uma cópia do repositório na sua conta.
+
+### 2. Clone o Repositório Forkado
+
+1. No seu repositório forkado, clique no botão **Code** e copie o link HTTPS.
+2. No terminal, execute:
+   ```bash
+   git clone <url-do-seu-fork>
+   cd AulaRDS
+   ```
+
+### 3. Configure o Banco de Dados
+
+1. Certifique-se de que o banco de dados PostgreSQL no AWS RDS está configurado.
+2. Execute o script `north
 1. Acesse o repositório original no GitHub.
 2. Clique no botão **Compare & Pull Request**.
 3. Preencha o título e a descrição do Pull Request, explicando as mudanças realizadas.

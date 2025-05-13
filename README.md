@@ -1,6 +1,7 @@
 # Gerenciamento de Categorias com Streamlit e AWS RDS
 
-Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas de **Implementação de Software**. O objetivo é ensinar como conectar o Python a um banco de dados **AWS RDS** e demonstrar como criar uma aplicação interativa utilizando o framework **Streamlit** para realizar operações CRUD (Create, Read, Update, Delete) em uma tabela chamada `categories`.
+Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas de **Implementação de Software**. O objetivo é ensinar como conectar o Python a um banco de dados **AWS RDS** e demonstrar como criar uma aplicação interativa utilizando o framework **Streamlit** para realizar operações CRUD (Create, Read, Update, Delete) em uma tabela chamada `categories` e
+operações CRUD (Create, Read, Update, Delete) em uma tabela chamda `customers`.
 
 ---
 
@@ -10,6 +11,20 @@ Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas
 2. **Ler Categorias**: Visualize todas as categorias cadastradas no banco de dados.
 3. **Atualizar Categoria**: Atualize o nome e a descrição de uma categoria existente.
 4. **Deletar Categoria**: Exclua uma categoria pelo ID.
+
+Gerenciamento da Tabela customers
+
+A tabela customers armazena informações sobre os clientes da empresa, incluindo detalhes como nome da empresa, contato, endereço e telefone.
+Funcionalidades Implementadas:
+
+1. **Criar Cliente:** Permite adicionar um novo cliente ao banco de dados, incluindo informações como nome da empresa, contato e endereço.
+2. **Ler Clientes:** Exibe todos os clientes cadastrados, permitindo visualizar suas informações.
+3. **Atualizar Cliente:** Permite modificar os dados de um cliente existente, como nome, endereço e telefone.
+4. **Deletar Cliente:** Remove um cliente do banco de dados com base no seu customer_id.
+
+RA: 6323303
+Thiago de Souza Ribeiro
+
 
 ---
 
