@@ -1,37 +1,65 @@
-# Gerenciamento de Categorias com Streamlit e AWS RDS
+# Gerenciamento de Categorias e Customers com Streamlit e AWS RDS
 
-Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas de **Implementação de Software**. O objetivo é ensinar como conectar o Python a um banco de dados **AWS RDS** e demonstrar como criar uma aplicação interativa utilizando o framework **Streamlit** para realizar operações CRUD (Create, Read, Update, Delete) em uma tabela chamada `categories`.
+Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas de **Implementação de Software**. O objetivo é ensinar como conectar o Python a um banco de dados **AWS RDS** e demonstrar como criar uma aplicação interativa utilizando o framework **Streamlit** para realizar operações CRUD (Create, Read, Update, Delete) em duas tabelas: `categories` e `customers`.
 
 ---
 
-## Funcionalidades
+## Funcionalidades Principais
 
-1. **Criar Categoria**: Adicione novas categorias com nome e descrição.
-2. **Ler Categorias**: Visualize todas as categorias cadastradas no banco de dados.
-3. **Atualizar Categoria**: Atualize o nome e a descrição de uma categoria existente.
-4. **Deletar Categoria**: Exclua uma categoria pelo ID.
+### 1. Tabela **categories**
+
+* **Criar Categoria**: Adicione novas categorias com nome e descrição.
+* **Ler Categorias**: Visualize todas as categorias cadastradas em formato de tabela interativa.
+* **Atualizar Categoria**: Atualize o nome e a descrição de uma categoria existente.
+* **Deletar Categoria**: Exclua uma categoria pelo ID.
+
+### 2. Tabela **customers** *(Nova)*
+
+* **Criar Customer**: Insira um cliente com todos os campos:
+
+  * `customer_id` (VARCHAR(5))
+  * `company_name` (VARCHAR(40))
+  * `contact_name` (VARCHAR(30))
+  * `contact_title` (VARCHAR(30))
+  * `address` (VARCHAR(60))
+  * `city` (VARCHAR(15))
+  * `region` (VARCHAR(15))
+  * `postal_code` (VARCHAR(10))
+  * `country` (VARCHAR(15))
+  * `phone` (VARCHAR(24))
+  * `fax` (VARCHAR(24))
+* **Ler Customers**: Exibe todos os registros da tabela `customers` em uma tabela interativa `st.dataframe`, com colunas mapeadas para cada atributo.
+* **Atualizar Customer**: Selecione o `customer_id` e altere qualquer um dos campos acima, mantendo consistência dos dados.
+* **Deletar Customer**: Remova um cliente existente através do seu `customer_id`.
 
 ---
 
 ## Pré-requisitos
 
 1. **Python 3.8+** instalado.
+
 2. **Bibliotecas necessárias**:
-   - `streamlit`
-   - `psycopg2-binary`
-   - `pyyaml`
+
+   * `streamlit`
+   * `psycopg2-binary`
+   * `pyyaml`
+   * `pandas`
 
    Instale as dependências com o comando:
+
    ```bash
-   pip install streamlit psycopg2-binary pyyaml
+   pip install streamlit psycopg2-binary pyyaml pandas
    ```
 
 3. **Banco de Dados AWS RDS**:
-   - Um banco de dados PostgreSQL configurado no AWS RDS.
-   - Certifique-se de que o IP da sua máquina está autorizado no grupo de segurança do RDS.
+
+   * Um banco de dados PostgreSQL configurado no AWS RDS.
+   * Autorize o IP da sua máquina no grupo de segurança do RDS.
 
 4. **Arquivo de Configuração (`config.yml`)**:
-   - Crie um arquivo `config.yml` no mesmo diretório do código com as credenciais do banco de dados. Exemplo:
+
+   * Crie um arquivo `config.yml` no mesmo diretório do código com as credenciais do banco de dados. Exemplo:
+
      ```yaml
      database:
        host: "your-rds-endpoint.amazonaws.com"
@@ -45,84 +73,91 @@ Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas
 
 ## Estrutura do Repositório
 
-A estrutura do repositório é a seguinte:
-
 ```
 AulaRDS/
 │
-├── crud.py          # Código principal da aplicação Streamlit
-├── config.yml       # Arquivo de configuração com as credenciais do banco de dados
-├── Readme.md        # Documentação do projeto
-├── requirements.txt # Lista de dependências do projeto
-└── northwind.sql    # Script SQL para criar a tabela e popular o banco de dados
+├── crud_app.py       # Código principal da aplicação Streamlit (categories + customers)
+├── config.yml        # Credenciais do banco de dados
+├── README.md         # Documentação do projeto
+├── requirements.txt  # Lista de dependências do projeto
+└── northwind.sql     # Script SQL para criar tabelas e popular o banco de dados
 ```
 
 ---
 
-## Como Utilizar o Repositório
+## Como Utilizar
 
 1. **Clone o repositório**:
+
    ```bash
    git clone https://github.com/AleTavares/trabalhandocomrds.git
    cd trabalhandocomrds
    ```
 
 2. **Configure o banco de dados**:
-   - Certifique-se de que o banco de dados PostgreSQL no AWS RDS está configurado.
-   - Execute o script `northwind.sql` no banco de dados para criar a tabela `categories` e outros objetos necessários.
+
+   * No AWS RDS, execute o script `northwind.sql` para criar as tabelas `categories` e `customers`.
 
 3. **Configure o arquivo `config.yml`**:
-   - Insira as credenciais do banco de dados no arquivo `config.yml`.
+
+   * Preencha as credenciais do seu banco.
 
 4. **Instale as dependências**:
-   - Utilize o arquivo `requirements.txt` para instalar as dependências:
-     ```bash
-     pip install -r requirements.txt
-     ```
+
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 5. **Execute a aplicação**:
-   - Inicie o Streamlit com o comando:
-     ```bash
-     streamlit run crud.py
-     ```
 
-6. **Acesse a aplicação**:
-   - Abra o navegador e acesse o endereço exibido pelo Streamlit (geralmente `http://localhost:8501`).
+   ```bash
+   streamlit run crud_app.py
+   ```
+
+6. **Acesse a interface**:
+
+   * Abra o navegador no endereço exibido pelo Streamlit (ex: `http://localhost:8501`).
 
 ---
 
 ## Observações
 
-- **Segurança**: Não compartilhe o arquivo `config.yml` publicamente, pois ele contém credenciais sensíveis.
-- **Permissões no RDS**: Certifique-se de que o usuário do banco de dados possui permissões para realizar operações CRUD na tabela `categories`.
-- **Tabela `categories`**:
-  Certifique-se de que a tabela `categories` existe no banco de dados com a seguinte estrutura:
+* **Segurança**: Nunca compartilhe o `config.yml` publicamente.
+* **Permissões**: O usuário do banco deve ter direitos CRUD nas tabelas.
+* **Tabelas SQL**:
+
   ```sql
   CREATE TABLE categories (
       id SERIAL PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       description TEXT
   );
+
+  CREATE TABLE customers (
+      customer_id VARCHAR(5) PRIMARY KEY,
+      company_name VARCHAR(40) NOT NULL,
+      contact_name VARCHAR(30),
+      contact_title VARCHAR(30),
+      address VARCHAR(60),
+      city VARCHAR(15),
+      region VARCHAR(15),
+      postal_code VARCHAR(10),
+      country VARCHAR(15),
+      phone VARCHAR(24),
+      fax VARCHAR(24)
+  );
   ```
-
----
-
-## Desafio
-
-Além das funcionalidades implementadas, este repositório inclui um arquivo chamado [`DESAFIO.md`](./DESAFIO.md), que contém uma proposta de atividade prática para aprofundar os conhecimentos adquiridos. O desafio envolve a criação de novas funcionalidades ou melhorias na aplicação, incentivando o aprendizado prático.
-
-Certifique-se de ler o arquivo e tentar resolver o desafio para consolidar os conceitos apresentados no projeto.
 
 ---
 
 ## Próximos Passos
 
-- Adicionar autenticação para proteger a aplicação.
-- Melhorar a interface do usuário com mais validações e feedback.
-- Implementar paginação para a listagem de categorias.
+* Autenticação de usuários para acesso restrito.
+* Validações mais robustas nos formulários.
+* Filtros e paginação nas tabelas.
 
 ---
 
 ## Licença
 
-Este projeto é apenas para fins educacionais e foi desenvolvido para os alunos da UniFAAT. Sinta-se à vontade para utilizá-lo e modificá-lo conforme necessário.
+Este projeto é para fins educacionais, desenvolvido para alunos da UniFAAT. Fique à vontade para usar e adaptar conforme necessário.
