@@ -13,6 +13,23 @@ Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas
 
 ---
 
+## Funcionalidade: Gerenciamento de Order Details
+
+Agora é possível realizar as operações CRUD (Create, Read, Update, Delete) para a tabela `order_details` diretamente pela interface do Streamlit. As ações disponíveis incluem:
+
+- **Criar**: Adicionar um novo registro na tabela `order_details`.
+- **Ler**: Visualizar todos os registros existentes.
+- **Atualizar**: Modificar os valores de um registro específico.
+- **Deletar**: Remover um registro da tabela.
+
+### Como usar
+
+1. Navegue até o menu lateral e selecione "Order Details".
+2. Escolha a ação desejada (Criar, Ler, Atualizar ou Deletar).
+3. Preencha os campos necessários e clique no botão correspondente para executar a ação.
+
+---
+
 ## Pré-requisitos
 
 1. **Python 3.8+** instalado.
