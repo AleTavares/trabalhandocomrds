@@ -63,89 +63,110 @@ def delete_category(category_id):
 
 
 # funç~oes para interação da tabela customers
-def create_customer(customer_id, fax):
+def create_employee_territory(employee_id, territory_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO customers (customer_id, fax) VALUES (%s, %s)", (customer_id, fax)
+        "INSERT INTO employee_territories (employee_id, territory_id) VALUES (%s, %s)",
+        (employee_id, territory_id),
     )
     conn.commit()
     conn.close()
 
 
-def read_customers():
+def read_employee_territories():
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM customers")
+    cursor.execute("SELECT * FROM employee_territories")
     rows = cursor.fetchall()
     conn.close()
     return rows
 
 
-def update_customer(customer_id, fax):
+def update_employee_territory(employee_id, old_territory_id, new_territory_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "UPDATE customers SET fax = %s WHERE customer_id = %s", (fax, customer_id)
+        "UPDATE employee_territories SET territory_id = %s WHERE employee_id = %s AND territory_id = %s",
+        (new_territory_id, employee_id, old_territory_id),
     )
     conn.commit()
     conn.close()
 
 
-def delete_customer(customer_id):
+def delete_employee_territory(employee_id, territory_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM customers WHERE customer_id = %s", (customer_id,))
+    cursor.execute(
+        "DELETE FROM employee_territories WHERE employee_id = %s AND territory_id = %s",
+        (employee_id, territory_id),
+    )
     conn.commit()
     conn.close()
 
 
 # Interface do Streamlit
-st.title("Gerenciamento de Clientes")
+st.title("Gerenciamento de Employee Territories")
 
 # Menu de navegação
 menu = ["Criar", "Ler", "Atualizar", "Deletar"]
 choice = st.sidebar.selectbox("Menu", menu)
 
-# Criar cliente
+# Criar employee territory
 if choice == "Criar":
-    st.subheader("Adicionar novo cliente")
+    st.subheader("Adicionar novo Employee Territory")
     with st.form("create_form"):
-        customer_id = st.text_input("Cliente ID")
-        fax = st.text_input("Fax")
+        employee_id = st.number_input("Employee ID", min_value=1, step=1)
+        territory_id = st.text_input("Territory ID")
         submitted = st.form_submit_button("Adicionar")
         if submitted:
-            create_customer(customer_id, fax)
-            st.success(f"Cliente '{customer_id}' adicionado com sucesso!")
+            create_employee_territory(employee_id, territory_id)
+            st.success(
+                f"Employee Territory ({employee_id}, {territory_id}) adicionado com sucesso!"
+            )
 
-# Ler clientes
+# Ler employee territory
 elif choice == "Ler":
-    st.subheader("Lista de clientes")
-    customers = read_customers()
-    for customer in customers:
-        st.write(f"ID: {customer[0]} | Fax: {customer[1]}")
+    st.subheader("Lista de Employee Territories")
+    territories = read_employee_territories()
+    for et in territories:
+        st.write(f"Employee ID: {et[0]} | Territory ID: {et[1]}")
 
-# Atualizar cliente
+# Atualizar employee territory
 elif choice == "Atualizar":
-    st.subheader("Atualizar cliente")
-    customers = read_customers()
-    customer_ids = [customer[0] for customer in customers]
-    selected_id = st.selectbox("Selecione o ID do cliente", customer_ids)
-    selected_customer = next((c for c in customers if c[0] == selected_id), None)
-    if selected_customer:
-        with st.form("update_form"):
-            new_fax = st.text_input("Novo Fax", value=selected_customer[1])
-            submitted = st.form_submit_button("Atualizar")
-            if submitted:
-                update_customer(selected_id, new_fax)
-                st.success(f"Cliente ID {selected_id} atualizado com sucesso!")
+    st.subheader("Atualizar Employee Territory")
+    territories = read_employee_territories()
+    if territories:
+        options = [(et[0], et[1]) for et in territories]
+        selected = st.selectbox(
+            "Selecione o par (Employee ID, Territory ID)",
+            options,
+            format_func=lambda x: f"Employee ID: {x[0]}, Territory ID: {x[1]}",
+        )
+        new_territory_id = st.text_input("Novo Territory ID")
+        if st.button("Atualizar"):
+            update_employee_territory(selected[0], selected[1], new_territory_id)
+            st.success(
+                f"Employee Territory ({selected[0]}, {selected[1]}) atualizado para Territory ID {new_territory_id}!"
+            )
+    else:
+        st.info("Nenhum registro encontrado.")
 
-# Deletar cliente
+# Deletar employee territory
 elif choice == "Deletar":
-    st.subheader("Deletar Customer")
-    customers = read_customers()
-    customer_ids = [customer[0] for customer in customers]
-    selected_id = st.selectbox("Selecione o ID do cliente para deletar", customer_ids)
-    if st.button("Deletar"):
-        delete_customer(selected_id)
-        st.success(f"Cliente ID {selected_id} deletado com sucesso!")
+    st.subheader("Deletar Employee Territory")
+    territories = read_employee_territories()
+    if territories:
+        options = [(et[0], et[1]) for et in territories]
+        selected = st.selectbox(
+            "Selecione o par (Employee ID, Territory ID) para deletar",
+            options,
+            format_func=lambda x: f"Employee ID: {x[0]}, Territory ID: {x[1]}",
+        )
+        if st.button("Deletar"):
+            delete_employee_territory(selected[0], selected[1])
+            st.success(
+                f"Employee Territory ({selected[0]}, {selected[1]}) deletado com sucesso!"
+            )
+    else:
+        st.info("Nenhum registro encontrado.")
