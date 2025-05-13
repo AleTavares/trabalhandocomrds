@@ -165,3 +165,5 @@ Este desafio é uma oportunidade para você praticar habilidades importantes, co
 - Implementação de funcionalidades em um projeto real.
 
 Estamos ansiosos para ver sua contribuição! 🚀
+
+# streamlit run crud.py

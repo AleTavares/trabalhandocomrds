@@ -126,3 +126,56 @@ Certifique-se de ler o arquivo e tentar resolver o desafio para consolidar os co
 ## Licença
 
 Este projeto é apenas para fins educacionais e foi desenvolvido para os alunos da UniFAAT. Sinta-se à vontade para utilizá-lo e modificá-lo conforme necessário.
+
+---
+
+## Mudanças 
+
+🔧 Melhorias Técnicas
+Tratamento de Conexão Aprimorado
+Implementação de gerenciamento de contexto para conexões com o banco
+Tratamento robusto de erros com rollback automático
+Feedback visual para erros de conexão
+Validação de Dados Fortalecida
+Verificação de campos obrigatórios antes de operações
+Tratamento adequado de valores nulos/opcionais
+Formatação consistente de campos (strings, números decimais)
+Otimização de Consultas
+Uso de RETURNING para obter IDs após inserção
+Consultas parametrizadas para segurança
+Filtro de busca por nome do produto
+
+🎨 Melhorias de Interface
+Layout Aprimorado
+Organização em colunas para melhor aproveitamento de espaço
+Expanders para visualização detalhada de produtos
+Ícones e títulos descritivos
+Feedback Visual
+Mensagens de sucesso/erro contextualizadas
+Indicadores de status (✅ ativo / ❌ descontinuado)
+Formatação de valores monetários
+Experiência do Usuário
+Confirmação explícita para exclusões
+Auto-atualização da interface após operações
+Campos com valores padrão sensíveis
+
+⚙️ Funcionalidades Adicionadas
+Sistema de Busca
+Filtro por nome do produto na visualização
+Gestão de Transações
+Commit/Rollback automático conforme resultado
+Verificação de existência antes de operações
+Segurança
+Prevenção contra SQL Injection
+Validação de inputs do usuário
+
+📊 Melhorias de Dados
+Formatação Consistente
+Padronização de valores decimais (preços)
+Tratamento uniforme de valores nulos
+Feedback Informativo
+Exibição do ID após criação
+Detalhes completos do produto em operações
+Valores Padrão Inteligentes
+Campos numéricos iniciam com zero
+Checkbox para status de descontinuado
