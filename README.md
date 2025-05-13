@@ -1,128 +1,103 @@
-# Gerenciamento de Categorias com Streamlit e AWS RDS
+Murilo Miguel de Morais 6323525
+🛠️ CRUD para Order Details (Northwind Database)
+Este projeto implementa um sistema CRUD (Create, Read, Update, Delete) para a tabela order_details do banco de dados Northwind, utilizando Python, PostgreSQL e uma interface interativa com Streamlit.
+📌 Funcionalidades
+Este sistema permite:
+- Criar (Create): Adicionar novos detalhes de pedidos ao banco.
+- Ler (Read): Consultar detalhes de pedidos cadastrados.
+- Atualizar (Update): Modificar informações de um pedido.
+- Deletar (Delete): Remover um detalhe de pedido.
 
-Este projeto foi desenvolvido para os **alunos da UniFAAT** como parte das aulas de **Implementação de Software**. O objetivo é ensinar como conectar o Python a um banco de dados **AWS RDS** e demonstrar como criar uma aplicação interativa utilizando o framework **Streamlit** para realizar operações CRUD (Create, Read, Update, Delete) em uma tabela chamada `categories`.
+📂 Estrutura do Projeto
+📁 projeto_crud
+├── 📜 config.yml       # Arquivo de configuração do banco
+├── 📜 crud.py          # Código do CRUD e interface Streamlit
+├── 📜 requirements.txt # Lista de dependências
+├── 📜 README.md        # Documentação do projeto
 
----
 
-## Funcionalidades
 
-1. **Criar Categoria**: Adicione novas categorias com nome e descrição.
-2. **Ler Categorias**: Visualize todas as categorias cadastradas no banco de dados.
-3. **Atualizar Categoria**: Atualize o nome e a descrição de uma categoria existente.
-4. **Deletar Categoria**: Exclua uma categoria pelo ID.
+🚀 Passos para Executar o Projeto
+1️⃣ Configuração do Banco de Dados
+Antes de rodar o projeto, configure o arquivo config.yml com as credenciais do seu banco de dados PostgreSQL:
+database:
+  host: "SEU_HOST"
+  user: "SEU_USUARIO"
+  password: "SUA_SENHA"
+  dbname: "northwind"
+  port: 5432
 
----
 
-## Pré-requisitos
+🔹 Observação: O banco de dados Northwind precisa estar disponível e acessível para que as operações funcionem corretamente.
 
-1. **Python 3.8+** instalado.
-2. **Bibliotecas necessárias**:
-   - `streamlit`
-   - `psycopg2-binary`
-   - `pyyaml`
+2️⃣ Instalar Dependências
+Para garantir que todos os pacotes necessários estejam disponíveis, execute:
+pip install -r requirements.txt
 
-   Instale as dependências com o comando:
-   ```bash
-   pip install streamlit psycopg2-binary pyyaml
-   ```
 
-3. **Banco de Dados AWS RDS**:
-   - Um banco de dados PostgreSQL configurado no AWS RDS.
-   - Certifique-se de que o IP da sua máquina está autorizado no grupo de segurança do RDS.
+Isso instalará os pacotes Streamlit, psycopg2 e PyYAML.
 
-4. **Arquivo de Configuração (`config.yml`)**:
-   - Crie um arquivo `config.yml` no mesmo diretório do código com as credenciais do banco de dados. Exemplo:
-     ```yaml
-     database:
-       host: "your-rds-endpoint.amazonaws.com"
-       port: 5432
-       user: "your-username"
-       password: "your-password"
-       dbname: "your-database-name"
-     ```
+3️⃣ Rodar a Aplicação
+Para iniciar a interface interativa, execute:
+streamlit run crud.py
 
----
 
-## Estrutura do Repositório
+Isso abrirá a interface no navegador, onde você pode gerenciar os detalhes dos pedidos.
 
-A estrutura do repositório é a seguinte:
+🖥️ Interface do Streamlit
+Quando a aplicação for iniciada, você verá um menu lateral com as opções:
+🟢 Criar
+Adicione um novo detalhe de pedido informando:
+- ID do Pedido (order_id)
+- ID do Produto (product_id)
+- Preço Unitário (unit_price)
+- Quantidade (quantity)
+- Desconto (discount)
 
-```
-AulaRDS/
-│
-├── crud.py          # Código principal da aplicação Streamlit
-├── config.yml       # Arquivo de configuração com as credenciais do banco de dados
-├── Readme.md        # Documentação do projeto
-├── requirements.txt # Lista de dependências do projeto
-└── northwind.sql    # Script SQL para criar a tabela e popular o banco de dados
-```
+Após preencher os campos, clique em Adicionar para salvar no banco.
 
----
+🔵 Ler
+Esta seção exibe todos os detalhes de pedidos cadastrados no banco, com as seguintes informações:
+- ID do Pedido
+- ID do Produto
+- Preço Unitário
+- Quantidade
+- Desconto
 
-## Como Utilizar o Repositório
 
-1. **Clone o repositório**:
-   ```bash
-   git clone https://github.com/AleTavares/trabalhandocomrds.git
-   cd trabalhandocomrds
-   ```
+🟡 Atualizar
+Permite modificar um detalhe de pedido já existente:
+- Selecione um ID de Pedido.
+- Escolha o ID do Produto dentro daquele pedido.
+- Altere os valores de Preço Unitário, Quantidade ou Desconto.
+- Clique em Atualizar para salvar a alteração.
 
-2. **Configure o banco de dados**:
-   - Certifique-se de que o banco de dados PostgreSQL no AWS RDS está configurado.
-   - Execute o script `northwind.sql` no banco de dados para criar a tabela `categories` e outros objetos necessários.
 
-3. **Configure o arquivo `config.yml`**:
-   - Insira as credenciais do banco de dados no arquivo `config.yml`.
+🔴 Deletar
+Para remover um detalhe de pedido, siga os passos:
+- Selecione um ID de Pedido.
+- Escolha o ID do Produto dentro do pedido.
+- Clique em Deletar para excluir o registro.
 
-4. **Instale as dependências**:
-   - Utilize o arquivo `requirements.txt` para instalar as dependências:
-     ```bash
-     pip install -r requirements.txt
-     ```
 
-5. **Execute a aplicação**:
-   - Inicie o Streamlit com o comando:
-     ```bash
-     streamlit run crud.py
-     ```
+✅ Contribuição
+Se quiser contribuir com melhorias no projeto, siga estes passos:
+- Faça um fork do repositório.
+- Clone o projeto:git clone https://github.com/seu-usuario/projeto_crud.git
 
-6. **Acesse a aplicação**:
-   - Abra o navegador e acesse o endereço exibido pelo Streamlit (geralmente `http://localhost:8501`).
+- Crie uma nova branch:git checkout -b minha-modificacao
 
----
+- Faça as alterações e commit:git add .
+git commit -m "Implementação da melhoria XYZ"
 
-## Observações
+- Envie para o repositório:git push origin minha-modificacao
 
-- **Segurança**: Não compartilhe o arquivo `config.yml` publicamente, pois ele contém credenciais sensíveis.
-- **Permissões no RDS**: Certifique-se de que o usuário do banco de dados possui permissões para realizar operações CRUD na tabela `categories`.
-- **Tabela `categories`**:
-  Certifique-se de que a tabela `categories` existe no banco de dados com a seguinte estrutura:
-  ```sql
-  CREATE TABLE categories (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      description TEXT
-  );
-  ```
+- Abra um Pull Request no GitHub.
 
----
 
-## Desafio
+📢 Observações Finais
+✔️ Certifique-se de que o PostgreSQL está rodando e que as credenciais estão corretas.
+✔️ A tabela order_details deve existir no banco de dados Northwind.
+✔️ O projeto pode ser modificado para incluir mais funcionalidades conforme necessário.
 
-Além das funcionalidades implementadas, este repositório inclui um arquivo chamado [`DESAFIO.md`](./DESAFIO.md), que contém uma proposta de atividade prática para aprofundar os conhecimentos adquiridos. O desafio envolve a criação de novas funcionalidades ou melhorias na aplicação, incentivando o aprendizado prático.
 
-Certifique-se de ler o arquivo e tentar resolver o desafio para consolidar os conceitos apresentados no projeto.
-
----
-
-## Próximos Passos
-
-- Adicionar autenticação para proteger a aplicação.
-- Melhorar a interface do usuário com mais validações e feedback.
-- Implementar paginação para a listagem de categorias.
-
----
-
-## Licença
-
-Este projeto é apenas para fins educacionais e foi desenvolvido para os alunos da UniFAAT. Sinta-se à vontade para utilizá-lo e modificá-lo conforme necessário.
