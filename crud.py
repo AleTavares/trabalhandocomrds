@@ -49,11 +49,57 @@ def delete_category(category_id):
     conn.commit()
     conn.close()
 
+# Funções para interagir com a tabela order_details
+def create_order_detail(order_id, product_id, unit_price, quantity, discount):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        INSERT INTO order_details (order_id, product_id, unit_price, quantity, discount)
+        VALUES (%s, %s, %s, %s, %s)
+        """,
+        (order_id, product_id, unit_price, quantity, discount),
+    )
+    conn.commit()
+    conn.close()
+
+def read_order_details():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM order_details")
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def update_order_detail(order_id, product_id, unit_price, quantity, discount):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        UPDATE order_details
+        SET unit_price = %s, quantity = %s, discount = %s
+        WHERE order_id = %s AND product_id = %s
+        """,
+        (unit_price, quantity, discount, order_id, product_id),
+    )
+    conn.commit()
+    conn.close()
+
+def delete_order_detail(order_id, product_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "DELETE FROM order_details WHERE order_id = %s AND product_id = %s",
+        (order_id, product_id),
+    )
+    conn.commit()
+    conn.close()
+
 # Interface do Streamlit
 st.title("Gerenciamento de Categorias")
 
 # Menu de navegação
-menu = ["Criar", "Ler", "Atualizar", "Deletar"]
+menu = ["Criar", "Ler", "Atualizar", "Deletar", "Order Details"]
 choice = st.sidebar.selectbox("Menu", menu)
 
 # Criar categoria
@@ -99,3 +145,58 @@ elif choice == "Deletar":
     if st.button("Deletar"):
         delete_category(selected_id)
         st.success(f"Categoria ID {selected_id} deletada com sucesso!")
+
+# Interface do Streamlit para order_details
+elif choice == "Order Details":
+    st.subheader("Gerenciamento de Order Details")
+    action = st.selectbox("Escolha a ação", ["Criar", "Ler", "Atualizar", "Deletar"])
+
+    if action == "Criar":
+        with st.form("create_order_detail_form"):
+            order_id = st.number_input("Order ID", min_value=1, step=1)
+            product_id = st.number_input("Product ID", min_value=1, step=1)
+            unit_price = st.number_input("Unit Price", min_value=0.0, step=0.01)
+            quantity = st.number_input("Quantity", min_value=1, step=1)
+            discount = st.number_input("Discount", min_value=0.0, step=0.01)
+            submitted = st.form_submit_button("Adicionar")
+            if submitted:
+                create_order_detail(order_id, product_id, unit_price, quantity, discount)
+                st.success("Order Detail adicionado com sucesso!")
+
+    elif action == "Ler":
+        st.subheader("Lista de Order Details")
+        order_details = read_order_details()
+        for detail in order_details:
+            st.write(
+                f"Order ID: {detail[0]} | Product ID: {detail[1]} | Unit Price: {detail[2]} | Quantity: {detail[3]} | Discount: {detail[4]}"
+            )
+
+    elif action == "Atualizar":
+        st.subheader("Atualizar Order Detail")
+        order_details = read_order_details()
+        order_ids = [(detail[0], detail[1]) for detail in order_details]
+        selected_order = st.selectbox("Selecione o Order ID e Product ID", order_ids)
+        if selected_order:
+            selected_detail = next(
+                (detail for detail in order_details if (detail[0], detail[1]) == selected_order), None
+            )
+            if selected_detail:
+                with st.form("update_order_detail_form"):
+                    unit_price = st.number_input("Unit Price", value=selected_detail[2], step=0.01)
+                    quantity = st.number_input("Quantity", value=selected_detail[3], step=1)
+                    discount = st.number_input("Discount", value=selected_detail[4], step=0.01)
+                    submitted = st.form_submit_button("Atualizar")
+                    if submitted:
+                        update_order_detail(
+                            selected_order[0], selected_order[1], unit_price, quantity, discount
+                        )
+                        st.success("Order Detail atualizado com sucesso!")
+
+    elif action == "Deletar":
+        st.subheader("Deletar Order Detail")
+        order_details = read_order_details()
+        order_ids = [(detail[0], detail[1]) for detail in order_details]
+        selected_order = st.selectbox("Selecione o Order ID e Product ID para deletar", order_ids)
+        if st.button("Deletar"):
+            delete_order_detail(selected_order[0], selected_order[1])
+            st.success("Order Detail deletado com sucesso!")
