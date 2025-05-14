@@ -40,12 +40,13 @@
   --
 
   CREATE TABLE categories (
-      category_id smallint NOT NULL,
+      category_id SERIAL PRIMARY KEY,
       category_name character varying(15) NOT NULL,
       description text,
       picture bytea
+      
   );
-
+    
 
   --
   -- Name: customer_customer_demo; Type: TABLE; Schema: public; Owner: -; Tablespace: 
