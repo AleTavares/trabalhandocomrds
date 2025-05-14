@@ -126,3 +126,9 @@ Certifique-se de ler o arquivo e tentar resolver o desafio para consolidar os co
 ## Licença
 
 Este projeto é apenas para fins educacionais e foi desenvolvido para os alunos da UniFAAT. Sinta-se à vontade para utilizá-lo e modificá-lo conforme necessário.
+
+## Mudanças Implementadas
+
+Corrigido problema de conexão com banco de dados, configurando explicitamente as credenciais de conexão com o banco no arquivo 'config.yml'.
+Corrigido crud da tabela 'categories', ao criar o produto foi feito um novo id para o produto explicitamente, pois tinha um erro e estava sendo criado com valor nulo.
+Implementado tabela 'customers', com crud funcional.
