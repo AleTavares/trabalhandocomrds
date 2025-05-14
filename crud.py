@@ -4,98 +4,142 @@ import yaml
 
 # Função para carregar as credenciais do arquivo YAML
 def load_config():
-    with open("config.yml", "r") as file:
-        return yaml.safe_load(file)
+    try:
+        with open("config.yml", "r") as file:
+            return yaml.safe_load(file)
+    except Exception as e:
+        st.error(f"Erro ao carregar configuração: {e}")
+        return None
 
-# Função para conectar ao banco de dados RDS
+# Função para conectar ao banco de dados RDS com tratamento de erro
 def get_connection():
     config = load_config()
-    db = config["database"]
-    return psycopg2.connect(
-        host=db["host"],
-        port=db["port"],
-        user=db["user"],
-        password=db["password"],
-        dbname=db["dbname"]
-    )
+    if not config:
+        return None
+    try:
+        db = config["database"]
+        conn = psycopg2.connect(
+            host=db["host"],
+            port=db["port"],
+            user=db["user"],
+            password=db["password"],
+            dbname=db["dbname"]
+        )
+        return conn
+    except psycopg2.Error as e:
+        st.error(f"Erro ao conectar ao banco de dados: {e}")
+        return None
 
 # Funções para interagir com o banco de dados
-def create_category(name, description):
+def create_territory(territory_id, territory_description, region_id):
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO categories (name, description) VALUES (%s, %s)", (name, description))
-    conn.commit()
-    conn.close()
+    if conn:
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("INSERT INTO territories (territory_id, territory_description, region_id) VALUES (%s, %s, %s)",
+                               (territory_id, territory_description, region_id))
+                conn.commit()
+                st.success(f"Território '{territory_description}' adicionado com sucesso!")
+        except psycopg2.Error as e:
+            st.error(f"Erro ao inserir território: {e}")
+        finally:
+            conn.close()
 
-def read_categories():
+def read_territories():
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM categories")
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
+    if conn:
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT territory_id, territory_description, region_id FROM territories")
+                rows = cursor.fetchall()
+                return rows
+        except psycopg2.Error as e:
+            st.error(f"Erro ao buscar territórios: {e}")
+            return []
+        finally:
+            conn.close()
+    return []
 
-def update_category(category_id, name, description):
+def update_territory(territory_id, new_description, new_region_id):
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("UPDATE categories SET name = %s, description = %s WHERE id = %s", (name, description, category_id))
-    conn.commit()
-    conn.close()
+    if conn:
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("UPDATE territories SET territory_description = %s, region_id = %s WHERE territory_id = %s",
+                               (new_description, new_region_id, territory_id))
+                conn.commit()
+                st.success(f"Território ID {territory_id} atualizado com sucesso!")
+        except psycopg2.Error as e:
+            st.error(f"Erro ao atualizar território: {e}")
+        finally:
+            conn.close()
 
-def delete_category(category_id):
+def delete_territory(territory_id):
     conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM categories WHERE id = %s", (category_id,))
-    conn.commit()
-    conn.close()
+    if conn:
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("DELETE FROM territories WHERE territory_id = %s", (territory_id,))
+                conn.commit()
+                st.success(f"Território ID {territory_id} deletado com sucesso!")
+        except psycopg2.Error as e:
+            st.error(f"Erro ao deletar território: {e}")
+        finally:
+            conn.close()
 
 # Interface do Streamlit
-st.title("Gerenciamento de Categorias")
+st.title("Gerenciamento de Territórios")
 
 # Menu de navegação
 menu = ["Criar", "Ler", "Atualizar", "Deletar"]
 choice = st.sidebar.selectbox("Menu", menu)
 
-# Criar categoria
+# Criar território
 if choice == "Criar":
-    st.subheader("Adicionar Nova Categoria")
+    st.subheader("Adicionar Novo Território")
     with st.form("create_form"):
-        name = st.text_input("Nome da Categoria")
-        description = st.text_area("Descrição")
+        territory_id = st.text_input("ID do Território")
+        territory_description = st.text_input("Descrição do Território")
+        region_id = st.number_input("ID da Região", min_value=1, step=1)
         submitted = st.form_submit_button("Adicionar")
-        if submitted:
-            create_category(name, description)
-            st.success(f"Categoria '{name}' adicionada com sucesso!")
+        if submitted and territory_id and territory_description and region_id:
+            create_territory(territory_id, territory_description, region_id)
 
-# Ler categorias
+# Ler territórios
 elif choice == "Ler":
-    st.subheader("Lista de Categorias")
-    categories = read_categories()
-    for category in categories:
-        st.write(f"ID: {category[0]} | Nome: {category[1]} | Descrição: {category[2]}")
+    st.subheader("Lista de Territórios")
+    territories = read_territories()
+    if territories:
+        for territory in territories:
+            st.write(f"🆔 {territory[0]} | 🌍 {territory[1]} | 📌 Região ID: {territory[2]}")
+    else:
+        st.info("Nenhum território encontrado.")
 
-# Atualizar categoria
+# Atualizar território
 elif choice == "Atualizar":
-    st.subheader("Atualizar Categoria")
-    categories = read_categories()
-    category_ids = [category[0] for category in categories]
-    selected_id = st.selectbox("Selecione o ID da Categoria", category_ids)
-    selected_category = next((cat for cat in categories if cat[0] == selected_id), None)
-    if selected_category:
-        with st.form("update_form"):
-            new_name = st.text_input("Novo Nome", value=selected_category[1])
-            new_description = st.text_area("Nova Descrição", value=selected_category[2])
-            submitted = st.form_submit_button("Atualizar")
-            if submitted:
-                update_category(selected_id, new_name, new_description)
-                st.success(f"Categoria ID {selected_id} atualizada com sucesso!")
+    st.subheader("Atualizar Território")
+    territories = read_territories()
+    if territories:
+        territory_ids = [territory[0] for territory in territories]
+        selected_id = st.selectbox("Selecione o ID do Território", territory_ids)
+        selected_territory = next((territory for territory in territories if territory[0] == selected_id), None)
+        
+        if selected_territory:
+            with st.form("update_form"):
+                new_description = st.text_input("Nova Descrição", value=selected_territory[1])
+                new_region_id = st.number_input("Novo ID da Região", min_value=1, step=1, value=selected_territory[2])
+                submitted = st.form_submit_button("Atualizar")
+                if submitted and new_description and new_region_id:
+                    update_territory(selected_id, new_description, new_region_id)
 
-# Deletar categoria
+# Deletar território
 elif choice == "Deletar":
-    st.subheader("Deletar Categoria")
-    categories = read_categories()
-    category_ids = [category[0] for category in categories]
-    selected_id = st.selectbox("Selecione o ID da Categoria para Deletar", category_ids)
-    if st.button("Deletar"):
-        delete_category(selected_id)
-        st.success(f"Categoria ID {selected_id} deletada com sucesso!")
+    st.subheader("Deletar Território")
+    territories = read_territories()
+    if territories:
+        territory_ids = [territory[0] for territory in territories]
+        selected_id = st.selectbox("Selecione o ID do Território para Deletar", territory_ids)
+        if selected_id and st.button("Deletar"):
+            delete_territory(selected_id)
+    else:
+        st.info("Nenhum território disponível para deletar.")
